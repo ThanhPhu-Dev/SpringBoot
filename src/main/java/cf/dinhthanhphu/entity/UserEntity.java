@@ -28,7 +28,7 @@ public class UserEntity extends BaseEntity{
 	@Column(name = "username")
 	private String userName;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userid"),
 									inverseJoinColumns = @JoinColumn(name = "roleid"))
 	private List<RoleEntity> roles = new ArrayList<RoleEntity>();

@@ -2,49 +2,64 @@ package cf.dinhthanhphu.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import cf.dinhthanhphu.entity.RoleEntity;
-import cf.dinhthanhphu.entity.UserEntity;
 
-public class CustomUserDetails implements UserDetails{
-	
+public class CustomUserDetails extends BaseDTO implements UserDetails {
+
 	private static final long serialVersionUID = 3360998041653627481L;
+
+	private String fullName;
+
+	private String userName;
+
+	private String password;
+
+	private Integer status;
 	
-	UserEntity user;
+	private String resetPasswordToken;
+
+	private List<RoleEntity> roles = new ArrayList<RoleEntity>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (RoleEntity auUs : user.getRoles()) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_"+ auUs.getName()));
+		for (RoleEntity auUs : roles) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + auUs.getName()));
 		}
-        return authorities;
+		return authorities;
 	}
-	
-	public CustomUserDetails(UserEntity user) {
-		this.user = user;
+
+	public CustomUserDetails() {
+		super();
 	}
-	
+
+	public CustomUserDetails(CustomUserDetails user) {
+		this.fullName = user.fullName;
+		this.userName = user.userName;
+		this.password = user.password;
+		this.status = user.status;
+		this.roles = user.getRoles();
+	}
+
 	public CustomUserDetails(String userName, String password) {
-		this.user.setUserName(userName);
-		this.user.setPassword(password);
+		this.userName = userName;
+		this.password = password;
 	}
-	
+
 	@Override
 	public String getPassword() {
-		return user.getPassword();
+		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		return user.getUserName();
+		return userName;
 	}
 
 	@Override
@@ -67,12 +82,48 @@ public class CustomUserDetails implements UserDetails{
 		return true;
 	}
 
-	public UserEntity getUser() {
-		return user;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setUser(UserEntity user) {
-		this.user = user;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public List<RoleEntity> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<RoleEntity> roles) {
+		this.roles = roles;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 }

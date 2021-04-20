@@ -6,4 +6,5 @@ import cf.dinhthanhphu.entity.UserEntity;
 
 public interface IUserRepository extends JpaRepository<UserEntity, Long>{
 	UserEntity findOneByUserName(String username); 
+	boolean existsByUserName(String userName);
 }

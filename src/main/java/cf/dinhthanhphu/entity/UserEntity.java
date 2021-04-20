@@ -14,24 +14,37 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
 
 	@Column(name = "fullname")
 	private String fullName;
-	
+
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "status")
 	private Integer status;
-	
+
 	@Column(name = "username")
 	private String userName;
-	
+
+	@Column(name = "resetpasswordtoken", columnDefinition = "VARCHAR(45)")
+	private String resetPasswordToken;
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userid"),
-									inverseJoinColumns = @JoinColumn(name = "roleid"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "roleid"))
 	private List<RoleEntity> roles = new ArrayList<RoleEntity>();
+
+	public UserEntity() {
+		super();
+	}
+
+	public UserEntity(String userName, String password, String fullName, Integer status) {
+		this.fullName = fullName;
+		this.password = password;
+		this.userName = userName;
+		this.status = status;
+	}
 
 	public String getFullName() {
 		return fullName;
@@ -72,6 +85,5 @@ public class UserEntity extends BaseEntity{
 	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
 	}
-	
-	
+
 }

@@ -22,6 +22,8 @@ public class RoleEntity extends BaseEntity{
 	@ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
 	private List<UserEntity> users = new ArrayList<UserEntity>();
 	
+	
+	
 	public String getName() {
 		return name;
 	}

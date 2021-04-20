@@ -1,7 +1,6 @@
 package cf.dinhthanhphu;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class Application implements CommandLineRunner{
 	
 	@Autowired
 	IUserRepository userRepository;
-	@Autowired
+	@Autowired	
 	PasswordEncoder passwordEncoder;
 	
 	@Autowired
@@ -34,13 +33,12 @@ public class Application implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		// Khi chương trình chạy
 		// Insert vào csdl một user.
-		List<RoleEntity> a = roleRepository.findAllById(1L);
-		
-		UserEntity user = new UserEntity();
-		user.setUserName("thanhphu1");
-		user.setPassword(passwordEncoder.encode("123"));
-		user.setRoles(a);
-		userRepository.save(user);
+//		List<RoleEntity> a = roleRepository.findAllById(2L);
+//		UserEntity user = new UserEntity();
+//		user.setUserName("thanhphu3");
+//		user.setPassword(passwordEncoder.encode("123"));
+//		user.setRoles(a);
+//		userRepository.save(user);
 		//System.out.println(user);
 	}
 } 	

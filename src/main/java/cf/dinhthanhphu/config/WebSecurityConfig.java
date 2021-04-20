@@ -47,11 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/", "/home","/api/login").permitAll() // Cho phép tất cả mọi người truy cập vào 2 địa
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/", "/home","/api/login", "/api/signup").permitAll() // Cho phép tất cả mọi người truy cập vào 2 địa
 																		// chỉ này
 				.anyRequest().authenticated() // Tất cả các request khác đều cần phải xác thực mới được truy cập
 				.and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/api/logoutseccess")
-				.invalidateHttpSession(true);
+				.invalidateHttpSession(true).deleteCookies("");
 		// Thêm một lớp Filter kiểm tra jwt
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

@@ -4,9 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sun.mail.handlers.message_rfc822;
+
+import cf.dinhthanhphu.CustomerNotFoundException;
 import cf.dinhthanhphu.convert.RoleConvert;
 import cf.dinhthanhphu.dto.CustomUserDetails;
 import cf.dinhthanhphu.dto.RoleDTO;
@@ -29,13 +34,16 @@ import cf.dinhthanhphu.payload.LoginResponses;
 import cf.dinhthanhphu.payload.SingupRequest;
 import cf.dinhthanhphu.repository.IRoleRepository;
 import cf.dinhthanhphu.service.INewAccountService;
+import cf.dinhthanhphu.service.IRessetPassword;
+import cf.dinhthanhphu.utils.SendMailUtils;
+import cf.dinhthanhphu.utils.URLUtils;
 
 @RestController
 @RequestMapping("/api")
 public class HomeAPI {
 
 	@Autowired
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	private JwtTokenProvider tokenProvider;
@@ -49,9 +57,12 @@ public class HomeAPI {
 	@Autowired
 	private RoleConvert roleConvert;
 	
+	@Autowired
+	private IRessetPassword resetPassword;
 	
-//	@Autowired
-//	private INewAccountService newAccountService;
+	@Autowired
+	private SendMailUtils sendmail;
+	
 
 	@GetMapping(value = { "/", "/home" })
 	public String homepage() {
@@ -110,5 +121,34 @@ public class HomeAPI {
 	@GetMapping("/logout-success")
 	public ResponseEntity<?> logout() {
 		return ResponseEntity.ok("Logout Thành công mới thấy dòng này");
+	}
+	
+	@PostMapping("/forgetpassword")
+	public ResponseEntity<?> processForgetPassword(HttpServletRequest req){
+		String username = req.getParameter("username");
+		String token = RandomStringUtils.random(30,true,false);
+		
+		try {
+			
+			String email = resetPassword.updateResetPasswordToken(token, username);
+			String resetPasswordLink = URLUtils.getSiteURL(req) + "/resetpassword?token"+token;
+			sendmail.sendEmail(email, resetPasswordLink);
+		} catch (CustomerNotFoundException | UnsupportedEncodingException | MessagingException e) {
+			ResponseEntity.badRequest().body(e.getMessage());
+		}
+		return ResponseEntity.ok(token);
+	}
+	
+	@PostMapping("/resetpassword")
+	public String processResetPassword(HttpServletRequest req){
+		String token = req.getParameter("token");
+		String password = req.getParameter("password");
+		CustomUserDetails user = resetPassword.getByResetPasswordToken(token);
+		if(user == null) {
+			return "Không tồn tại";
+		}else {
+			resetPassword.updatePassword(user, password);
+		}
+		return "thành Công";
 	}
 }

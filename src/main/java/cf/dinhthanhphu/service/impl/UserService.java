@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import cf.dinhthanhphu.CustomerNotFoundException;
 import cf.dinhthanhphu.convert.RoleConvert;
 import cf.dinhthanhphu.convert.UserConvert;
 import cf.dinhthanhphu.dto.CustomUserDetails;
@@ -78,20 +79,28 @@ public class UserService implements UserDetailsService, INewAccountService, IRes
 	}
 
 	@Override
-	public void updateResetPasswordToken(String token, String email) {
-		
+	public String updateResetPasswordToken(String token, String username) throws CustomerNotFoundException {
+		UserEntity user = userRepository.findOneByUserName(username);
+		if(user != null || user.getEmail() != null) {
+			user.setResetPasswordToken(token);
+			userRepository.save(user);
+			return user.getEmail();
+		}else {
+			throw new CustomerNotFoundException("không thể tìm thấy " + user.getEmail());
+		}
 	}
 
 	@Override
 	public CustomUserDetails getByResetPasswordToken(String resetPasswordToken) {
-		return null;
+		return convert.toDTO(userRepository.findOneByResetPasswordToken(resetPasswordToken));
 	}
 
 	@Override
 	public void updatePassword(CustomUserDetails user, String newpassword) {
-		
+		UserEntity userentity = userRepository.findOneByUserName(user.getUsername());
+		String encodedPasword = passwordEncoder.encode(newpassword);
+		userentity.setPassword(encodedPasword);
+		userentity.setResetPasswordToken(null);
+		userRepository.save(userentity);
 	}
-	
-	
-
 }

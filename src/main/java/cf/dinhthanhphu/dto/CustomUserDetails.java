@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,8 @@ public class CustomUserDetails extends BaseDTO implements UserDetails {
 	private String userName;
 
 	private String password;
+	
+	private String email;
 
 	private Integer status;
 	
@@ -40,11 +43,7 @@ public class CustomUserDetails extends BaseDTO implements UserDetails {
 	}
 
 	public CustomUserDetails(CustomUserDetails user) {
-		this.fullName = user.fullName;
-		this.userName = user.userName;
-		this.password = user.password;
-		this.status = user.status;
-		this.roles = user.getRoles();
+		BeanUtils.copyProperties(user, this);
 	}
 
 	public CustomUserDetails(String userName, String password) {
@@ -124,6 +123,14 @@ public class CustomUserDetails extends BaseDTO implements UserDetails {
 
 	public void setResetPasswordToken(String resetPasswordToken) {
 		this.resetPasswordToken = resetPasswordToken;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

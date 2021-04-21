@@ -18,6 +18,9 @@ public class UserEntity extends BaseEntity {
 
 	@Column(name = "fullname")
 	private String fullName;
+	
+	@Column(name = "email")
+	private String email;
 
 	@Column(name = "password")
 	private String password;
@@ -84,6 +87,22 @@ public class UserEntity extends BaseEntity {
 
 	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

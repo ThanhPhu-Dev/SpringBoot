@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import lombok.Data;
+
+@Data
 @MappedSuperclass
 public abstract class BaseEntity {
 
@@ -27,39 +30,5 @@ public abstract class BaseEntity {
 	@Column(name = "modifiedby")
 	private Date modifiedBy;
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getCreateddate() {
-		return createddate;
-	}
-
-	public void setCreateddate(String createddate) {
-		this.createddate = createddate;
-	}
-
-	public Date getModifiedDate() {
-		return modifiedDate;
-	}
-
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-
-	public Date getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(Date modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
-	public Long getId() {
-		return id;
-	}
+	
 }

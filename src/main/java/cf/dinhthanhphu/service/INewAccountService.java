@@ -7,5 +7,5 @@ import cf.dinhthanhphu.dto.RoleDTO;
 
 public interface INewAccountService {
 	boolean existsByUsername(String username);
-	CustomUserDetails save(String username, String password, String fullname, List<RoleDTO> role);
+	CustomUserDetails save(String username, String password, String fullname,String email,  List<RoleDTO> role);
 }

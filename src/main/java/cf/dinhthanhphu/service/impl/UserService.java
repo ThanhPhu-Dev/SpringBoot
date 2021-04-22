@@ -70,11 +70,10 @@ public class UserService implements UserDetailsService, INewAccountService, IRes
 
 	@Transactional
 	@Override
-	public CustomUserDetails save(String username, String password, String fullname, List<RoleDTO> roles) {
+	public CustomUserDetails save(String username, String password, String fullname,String email, List<RoleDTO> roles) {
 		
 		List<RoleEntity> lstrole = roles.stream().map(s -> roleRepository.findOne(s.getId())).collect(Collectors.toList());
-		UserEntity user = new UserEntity(username, passwordEncoder.encode(password), fullname, 1);
-		user.setRoles(lstrole);
+		UserEntity user = new UserEntity(username, passwordEncoder.encode(password), fullname,email, 1, lstrole);
 		return convert.toDTO(userRepository.save(user));
 	}
 

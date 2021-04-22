@@ -15,4 +15,7 @@ public class SingupRequest {
 	
 	@NotBlank
 	private String fullName;
+	
+	@NotBlank
+	private String email;
 }

@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "role")
 public class RoleEntity extends BaseEntity{
@@ -21,32 +24,5 @@ public class RoleEntity extends BaseEntity{
 
 	@ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
 	private List<UserEntity> users = new ArrayList<UserEntity>();
-	
-	
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public List<UserEntity> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<UserEntity> users) {
-		this.users = users;
-	}
-	
 	
 }

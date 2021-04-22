@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 				UserDetails userDetails = customUserDetailsService.loadUserById(userId);
 				if (userDetails != null) {
-					// set authentication (dung để lưu vào SecuritycontextJolder) tham số là user và
+					// set authentication (dung để lưu vào SecuritycontextHolder) tham số là user và
 					// authorities
 					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 							userDetails, null, userDetails.getAuthorities());

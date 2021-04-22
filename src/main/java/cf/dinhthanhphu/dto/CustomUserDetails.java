@@ -29,13 +29,13 @@ public class CustomUserDetails extends BaseDTO implements UserDetails {
 	
 	private String resetPasswordToken;
 
-	private List<RoleEntity> roles = new ArrayList<RoleEntity>();
+	private List<String> roles = new ArrayList<String>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (RoleEntity auUs : roles) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_" + auUs.getName()));
+		for (String auUs : roles) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + auUs));
 		}
 		return authorities;
 	}

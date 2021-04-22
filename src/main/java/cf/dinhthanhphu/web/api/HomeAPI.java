@@ -107,7 +107,7 @@ public class HomeAPI {
 		}
 		//create account
 		List<RoleDTO> roles = new ArrayList<>();
-		roles.add(roleConvert.toDTO(roleRepository.findOne(1L)));
+		roles.add(roleConvert.toDTO(roleRepository.findOne(2L)));
 		newAccountService.save(singupRequest.getUsername(), singupRequest.getPassword(), singupRequest.getFullName(), singupRequest.getEmail(), roles);
 		return ResponseEntity.ok("Đăng ký thành công");
 	}

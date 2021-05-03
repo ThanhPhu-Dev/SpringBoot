@@ -28,6 +28,8 @@ public class CustomUserDetails extends BaseDTO implements UserDetails {
 	private Integer status;
 	
 	private String resetPasswordToken;
+	
+	private String avatar;
 
 	private List<String> roles = new ArrayList<String>();
 

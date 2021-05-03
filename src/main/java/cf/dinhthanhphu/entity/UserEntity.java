@@ -33,6 +33,9 @@ public class UserEntity extends BaseEntity {
 
 	@Column(name = "username")
 	private String userName;
+	
+	@Column(name="avatar")
+	private String avatar;
 
 	@Column(name = "resetpasswordtoken", columnDefinition = "VARCHAR(45)")
 	private String resetPasswordToken;

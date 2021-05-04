@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/", "/home","/api/login", "/api/signup", "/api/forgetpassword",
-										"/api/resetpassword").permitAll() // Cho phép tất cả mọi người truy cập vào 2 địa
+										"/api/resetpassword", "/images/**").permitAll() // Cho phép tất cả mọi người truy cập vào 2 địa
 				.antMatchers("/api/news").hasRole("ADMIN") // chỉ quyền admin mới vào được
 				.anyRequest().authenticated()// Tất cả các request khác đều cần phải xác thực mới được truy cập
 				

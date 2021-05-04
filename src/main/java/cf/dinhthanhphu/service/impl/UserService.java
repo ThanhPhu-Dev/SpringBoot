@@ -109,7 +109,9 @@ public class UserService implements UserDetailsService, INewAccountService {
 	@Override
 	public CustomUserDetails updateAvatar(CustomUserDetails user, MultipartFile urlImage) throws IOException {
 		UserEntity us = userRepository.findOneByUserName(user.getUsername());
+		
 		if (!Files.exists(UploadPath.CURRENT_FOLDER.resolve(UploadPath.RESOURCE_PATH).resolve(UploadPath.IMAGE_PATH))) {
+			
 			Files.createDirectories(
 					UploadPath.CURRENT_FOLDER.resolve(UploadPath.RESOURCE_PATH).resolve(UploadPath.IMAGE_PATH));
 		}

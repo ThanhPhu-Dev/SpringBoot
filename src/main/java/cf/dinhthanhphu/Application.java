@@ -1,19 +1,10 @@
 package cf.dinhthanhphu;
 
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import cf.dinhthanhphu.entity.RoleEntity;
-import cf.dinhthanhphu.entity.UserEntity;
-import cf.dinhthanhphu.repository.IRoleRepository;
-import cf.dinhthanhphu.repository.IUserRepository;
-
+	
 @SpringBootApplication
 public class Application implements CommandLineRunner{
 
@@ -21,13 +12,13 @@ public class Application implements CommandLineRunner{
         SpringApplication.run(Application.class, args);
     }
 	
-	@Autowired
-	IUserRepository userRepository;
-	@Autowired	
-	PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	IRoleRepository roleRepository;
+//	@Autowired
+//	IUserRepository userRepository;
+//	@Autowired	
+//	PasswordEncoder passwordEncoder;
+//	
+//	@Autowired
+//	IRoleRepository roleRepository;
 
 	@Override
 	public void run(String... args) throws Exception {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,15 +17,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.cloudinary.*;
 
 import cf.dinhthanhphu.CustomerNotFoundException;
 import cf.dinhthanhphu.convert.RoleConvert;
@@ -39,6 +42,8 @@ import cf.dinhthanhphu.repository.IRoleRepository;
 import cf.dinhthanhphu.service.INewAccountService;
 import cf.dinhthanhphu.utils.SendMailUtils;
 import cf.dinhthanhphu.utils.URLUtils;
+import cf.dinhthanhphu.utils.cloudinaryUtils;
+
 
 @RestController
 @RequestMapping("/api")
@@ -56,7 +61,8 @@ public class HomeAPI {
 	@Autowired
 	private IRoleRepository roleRepository;
 	
-	
+	@Autowired
+	private cloudinaryUtils cloudUtil;
 
 	@Autowired
 	private RoleConvert roleConvert;
@@ -152,13 +158,38 @@ public class HomeAPI {
 		}
 		return "thành Công";
 	}
-	//@RequestPart MultipartFile avatar
-	@PostMapping("/updateavatar")
-	public ResponseEntity<?> uploadAvatar(@ModelAttribute UserAvatarForm avatarFrom
-										) throws IOException{
-		CustomUserDetails user = newAccountService.findOneByUserName(avatarFrom.getUsername());
-		String original = avatarFrom.getAvatar().getOriginalFilename();
-		CustomUserDetails result= newAccountService.updateAvatar(user, avatarFrom.getAvatar());
-		return ResponseEntity.ok(result);
+//	//@RequestPart MultipartFile avatar
+//	@PostMapping("/updateavatar")
+//	public ResponseEntity<?> uploadAvatar(@ModelAttribute UserAvatarForm avatarFrom) throws IOException{
+//		CustomUserDetails user = newAccountService.findOneByUserName(avatarFrom.getUsername());
+//		String original = avatarFrom.getAvatar().getOriginalFilename();
+//		CustomUserDetails result= newAccountService.updateAvatar(user, avatarFrom.getAvatar());
+//		return ResponseEntity.ok(result);
+//	}
+	
+	@PostMapping("/uploadcoundinary")
+	public ResponseEntity<?> uploadCoundinary(@ModelAttribute UserAvatarForm photoUpload) throws IOException{
+		Map uploadResult = null;
+        if (photoUpload.getAvatar() != null) {
+        	MultipartFile[] files = photoUpload.getAvatar();
+        	for(MultipartFile file : files) {
+        		uploadResult = cloudUtil.uploadImage(file);
+        		System.out.println("Public _id: "+uploadResult.get("public_id"));
+        		System.out.println("url: "+uploadResult.get("url"));
+        	}
+            
+//            photoUpload.setPublicId((String) uploadResult.get("public_id"));
+//            Object version = uploadResult.get("version");
+//            if (version instanceof Integer) {
+//                photoUpload.setVersion(new Long((Integer) version));    
+//            } else {
+//                photoUpload.setVersion((Long) version);
+//            }
+//            
+//            photoUpload.setSignature((String) uploadResult.get("signature"));
+//            photoUpload.setFormat((String) uploadResult.get("format"));
+//            photoUpload.setResourceType((String) uploadResult.get("resource_type"));
+        }
+		return ResponseEntity.accepted().build();
 	}
 }
